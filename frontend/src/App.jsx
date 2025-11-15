@@ -8,6 +8,7 @@ const CATEGORY_PRESETS = [
   { label: "Other", value: "other" }
 ];
 
+const API_BASE_URL = "http://localhost:4000";
 const DEFAULT_GOAL = 5000; // carbon calories / day
 
 function formatDateKey(date) {
@@ -213,6 +214,9 @@ function NewEntryCard({ onAddEntry }) {
   const [label, setLabel] = useState("");
   const [amount, setAmount] = useState("");
   const [notes, setNotes] = useState("");
+  const [isEstimating, setIsEstimating] = useState(false);
+  const [estimateHint, setEstimateHint] = useState("");
+  const [estimateError, setEstimateError] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -231,6 +235,47 @@ function NewEntryCard({ onAddEntry }) {
     setLabel("");
     setAmount("");
     setNotes("");
+    setEstimateHint("");
+    setEstimateError("");
+  }
+
+  async function handleEstimate(e) {
+    e.preventDefault();
+    setEstimateError("");
+    setEstimateHint("");
+
+    if (!label.trim()) {
+      setEstimateError("Describe the activity first so we can estimate it.");
+      return;
+    }
+
+    setIsEstimating(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/estimate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ description: label })
+      });
+
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}));
+        throw new Error(errBody.error || `HTTP ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      setCategory(data.category || "other");
+      setAmount(String(data.carbon_calories ?? data.carbon_grams ?? ""));
+      setEstimateHint(data.explanation || data.assumptions || "");
+      if (!notes.trim() && data.explanation) {
+        setNotes(data.explanation);
+      }
+    } catch (err) {
+      console.error("Estimate error:", err);
+      setEstimateError("Couldn’t estimate this activity. Try again or enter a value manually.");
+    } finally {
+      setIsEstimating(false);
+    }
   }
 
   return (
@@ -238,7 +283,7 @@ function NewEntryCard({ onAddEntry }) {
       <div className="card-header">
         <h3>Log Activity</h3>
         <p className="card-subtitle">
-          Add trips, meals, or habits — we’ll convert them into carbon calories.
+          Describe your activity, then let the AI estimate its carbon or enter a custom value.
         </p>
       </div>
       <form className="form" onSubmit={handleSubmit}>
@@ -260,11 +305,11 @@ function NewEntryCard({ onAddEntry }) {
         </div>
 
         <div className="form-row">
-          <label htmlFor="label">Activity</label>
+          <label htmlFor="label">Activity (natural language)</label>
           <input
             id="label"
             type="text"
-            placeholder="e.g. 3 km Uber ride"
+            placeholder="e.g. Took an Uber about 4 km to campus"
             value={label}
             onChange={e => setLabel(e.target.value)}
           />
@@ -272,16 +317,37 @@ function NewEntryCard({ onAddEntry }) {
 
         <div className="form-row">
           <label htmlFor="amount">Carbon calories</label>
-          <input
-            id="amount"
-            type="number"
-            min="0"
-            step="1"
-            placeholder="e.g. 250"
-            value={amount}
-            onChange={e => setAmount(e.target.value)}
-          />
+          <div className="input-with-button">
+            <input
+              id="amount"
+              type="number"
+              min="0"
+              step="1"
+              placeholder="e.g. 250"
+              value={amount}
+              onChange={e => setAmount(e.target.value)}
+            />
+            <button
+              className="secondary-button"
+              onClick={handleEstimate}
+              disabled={isEstimating}
+            >
+              {isEstimating ? "Estimating..." : "Estimate for me"}
+            </button>
+          </div>
         </div>
+
+        {estimateHint && (
+          <p className="estimation-hint">
+            {estimateHint}
+          </p>
+        )}
+
+        {estimateError && (
+          <p className="estimation-error">
+            {estimateError}
+          </p>
+        )}
 
         <div className="form-row">
           <label htmlFor="notes">Notes (optional)</label>

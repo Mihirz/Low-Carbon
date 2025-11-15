@@ -40,3 +40,42 @@
 .read-the-docs {
   color: #888;
 }
+
+.input-with-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.secondary-button {
+  border-radius: 999px;
+  border: 1px solid rgba(55, 59, 94, 0.9);
+  background: rgba(6, 9, 24, 0.9);
+  color: var(--text-muted);
+  padding: 7px 12px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.secondary-button:hover:not(:disabled) {
+  background: rgba(22, 27, 66, 0.95);
+  color: var(--text-main);
+}
+
+.secondary-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.estimation-hint {
+  margin: 2px 0 4px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+.estimation-error {
+  margin: 2px 0 4px;
+  font-size: 0.76rem;
+  color: #fca5a5;
+}

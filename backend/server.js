@@ -22,7 +22,7 @@ async function estimateWithOpenRouter(description) {
   }
 
   const body = {
-    model: "openai/gpt-4o", // or another OpenRouter model you prefer
+    model: "openai/gpt-4o-mini",
     response_format: { type: "json_object" },
     messages: [
       {
