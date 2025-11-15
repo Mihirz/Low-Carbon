@@ -237,7 +237,17 @@ function CurrentDayCard({ date, total, goal, remaining, progress, onGoalChange, 
             <button onClick={() => onShiftDay(1)}>&rarr;</button>
           </div>
         </div>
-        <p className="card-subtitle">Track your “carbon calories” like a daily budget.</p>
+        <p className="card-subtitle">
+          Track your{" "}
+          <span className="cc-tooltip">
+            carbon calories
+            <span className="cc-tooltip-bubble">
+              A carbon calorie (<strong>cc</strong>) is a simplified unit equal to{" "}
+              <strong>1 gram of CO₂-equivalent</strong>.
+            </span>
+          </span>{" "}
+          like a daily budget.
+        </p>
       </div>
 
       <div className="metrics-row">

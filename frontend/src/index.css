@@ -927,3 +927,54 @@ body.light-theme .toggle-pill-active {
 body.light-theme .toggle-pill-active:hover {
   background: #d8dfff;            /* tiny bit stronger on hover */
 }
+
+/* Carbon calorie tooltip */
+.cc-tooltip {
+  position: relative;
+  cursor: help;
+
+  /* Use explicit longhand for better browser support */
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: rgba(148, 163, 184, 0.9);
+  text-decoration-thickness: 1.3px;
+  text-underline-offset: 3px;
+
+  color: inherit; /* keep existing card text color */
+}
+
+.cc-tooltip-bubble {
+  position: absolute;
+  left: 0;
+  bottom: 115%;
+  transform: translateY(-4px);
+  min-width: 220px;
+  max-width: 320px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--text-main);
+  background: var(--bg-elevated-soft);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+  z-index: 30;
+}
+
+/* Softer look in light mode */
+body.light-theme .cc-tooltip-bubble {
+  background: #ffffff;
+  border-color: #e5e7eb;
+  color: #111827;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+}
+
+/* Show on hover/focus */
+.cc-tooltip:hover .cc-tooltip-bubble,
+.cc-tooltip:focus-within .cc-tooltip-bubble {
+  opacity: 1;
+  transform: translateY(0);
+}
