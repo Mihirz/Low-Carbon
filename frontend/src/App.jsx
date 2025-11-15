@@ -337,12 +337,6 @@ function NewEntryCard({ onAddEntry }) {
           </div>
         </div>
 
-        {estimateHint && (
-          <p className="estimation-hint">
-            {estimateHint}
-          </p>
-        )}
-
         {estimateError && (
           <p className="estimation-error">
             {estimateError}
