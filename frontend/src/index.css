@@ -114,8 +114,15 @@ body {
   color: var(--text-main);
 }
 
+
 .nav-button.subtle:hover {
   background: rgba(31, 35, 70, 0.7);
+  color: var(--text-main);
+}
+
+/* Softer hover state for nav buttons in light mode */
+body.light-theme .nav-button.subtle:hover {
+  background: rgba(120, 125, 255, 0.14); /* gentle lavender tint */
   color: var(--text-main);
 }
 
@@ -807,8 +814,12 @@ body.light-theme .progress-fill {
 
 .insights-chart {
   width: 100%;
-  max-width: 840px;
-  height: 260px;
+  max-width: 960px;      /* bigger chart */
+  height: 320px;         /* taller chart */
+  margin: 0 auto;        /* centers the chart */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .insights-chart svg {

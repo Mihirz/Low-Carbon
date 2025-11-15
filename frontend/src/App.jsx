@@ -815,7 +815,7 @@ function AIInsightsCard({ currentDate, todaysEntries, dailyGoal }) {
       <div className="card-header">
         <h3>AI Insights</h3>
         <p className="card-subtitle">
-          Let CarbonCal&apos;s AI coach summarize your impact and suggest small, high-leverage changes.
+          Let LowCarb(on)&apos;s AI coach summarize your impact and suggest small, high-leverage changes.
         </p>
       </div>
 
